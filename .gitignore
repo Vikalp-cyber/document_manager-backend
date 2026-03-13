@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+.env
+*.log
+compile_errors.txt
+ts_errors.txt
+docker_error.txt
+storage/*
+!storage/.gitkeep

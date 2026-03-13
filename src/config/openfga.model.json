@@ -1,0 +1,452 @@
+{
+    "schema_version": "1.1",
+    "type_definitions": [
+        {
+            "type": "user"
+        },
+        {
+            "type": "system",
+            "relations": {
+                "admin": {
+                    "this": {}
+                }
+            },
+            "metadata": {
+                "relations": {
+                    "admin": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "project",
+            "relations": {
+                "parent_system": {
+                    "this": {}
+                },
+                "owner": {
+                    "this": {}
+                },
+                "editor": {
+                    "this": {}
+                },
+                "viewer": {
+                    "this": {}
+                },
+                "create_document": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "editor"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_system"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "admin"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "view": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "editor"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "viewer"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_system"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "admin"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "delete": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_system"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "admin"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "metadata": {
+                "relations": {
+                    "parent_system": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "system"
+                            }
+                        ]
+                    },
+                    "owner": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    },
+                    "editor": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    },
+                    "viewer": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "folder",
+            "relations": {
+                "parent_project": {
+                    "this": {}
+                },
+                "parent_folder": {
+                    "this": {}
+                },
+                "owner": {
+                    "this": {}
+                },
+                "editor": {
+                    "this": {}
+                },
+                "viewer": {
+                    "this": {}
+                },
+                "create_document": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "editor"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_project"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "create_document"
+                                    }
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_folder"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "create_document"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "view": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "editor"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "viewer"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_project"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "view"
+                                    }
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_folder"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "view"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "delete": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_project"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "delete"
+                                    }
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_folder"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "delete"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "metadata": {
+                "relations": {
+                    "parent_project": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "project"
+                            }
+                        ]
+                    },
+                    "parent_folder": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "folder"
+                            }
+                        ]
+                    },
+                    "owner": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    },
+                    "editor": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    },
+                    "viewer": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "document",
+            "relations": {
+                "parent_project": {
+                    "this": {}
+                },
+                "parent_folder": {
+                    "this": {}
+                },
+                "owner": {
+                    "this": {}
+                },
+                "editor": {
+                    "this": {}
+                },
+                "viewer": {
+                    "this": {}
+                },
+                "view": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "editor"
+                                }
+                            },
+                            {
+                                "computedUserset": {
+                                    "relation": "viewer"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_project"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "view"
+                                    }
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_folder"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "view"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "delete": {
+                    "union": {
+                        "child": [
+                            {
+                                "computedUserset": {
+                                    "relation": "owner"
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_project"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "delete"
+                                    }
+                                }
+                            },
+                            {
+                                "tupleToUserset": {
+                                    "tupleset": {
+                                        "relation": "parent_folder"
+                                    },
+                                    "computedUserset": {
+                                        "relation": "delete"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "metadata": {
+                "relations": {
+                    "parent_project": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "project"
+                            }
+                        ]
+                    },
+                    "parent_folder": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "folder"
+                            }
+                        ]
+                    },
+                    "owner": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    },
+                    "editor": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    },
+                    "viewer": {
+                        "directly_related_user_types": [
+                            {
+                                "type": "user"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

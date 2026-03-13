@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: document_manager
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  openfga-migrate:
+    image: openfga/openfga:latest
+    container_name: openfga-migrate
+    command: migrate --datastore-engine postgres --datastore-uri postgres://admin:password@postgres:5432/document_manager?sslmode=disable
+    depends_on:
+      - postgres
+    restart: on-failure
+
+  openfga:
+    image: openfga/openfga:latest
+    container_name: openfga
+    command: run --datastore-engine postgres --datastore-uri postgres://admin:password@postgres:5432/document_manager?sslmode=disable
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      openfga-migrate:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_started
+    restart: always
+
+  backend:
+    build:
+      context: .
+    ports:
+      - "3001:3000"
+    environment:
+      - DATABASE_URL=postgresql://admin:password@postgres:5432/document_manager
+      - PORT=3000
+      - FGA_API_URL=http://openfga:8080
+    depends_on:
+      - postgres
+      - openfga
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  pgdata:
